@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+                
+    <bean id="helloBean" class="com.jazy.aop.HelloService">
+    	<constructor-arg type="java.lang.String" value="127.0.0.1"/>
+    	<constructor-arg type="java.lang.Integer" value="22"/>
+    </bean>
+    
+    <bean id="buyBean" class="com.abc.aop.BuyService" />
+    
+	<!--     
+	<bean id="helloBean2" class="com.jazy.aop.HelloService">
+    	<constructor-arg name="db" value="127.0.0.1"/>
+    	<constructor-arg name="port" value="4567"/>
+    </bean>
+    
+    <bean id="helloBean3" class="com.jazy.aop.HelloService">
+    	<property name="db" value="192.168.100.52"/>
+    	<property name="port" value="3456"/>
+    </bean>
+    -->    
+   
+    <bean id="helloAspect" class="com.jazy.aop.HelloAspect" />    
+    
+    <aop:config >  
+    	
+    	<aop:aspect ref="helloAspect">
+    		<aop:pointcut id="helloPoint" expression="execution(* com.jazy..*.*(..))" />
+    		<aop:before method="beforeAdvice" pointcut-ref="helloPoint" />
+    		<aop:after method="afterAdvice" pointcut-ref="helloPoint"/>
+    	</aop:aspect>
+    	
+    	<aop:aspect ref="helloAspect">
+    		<aop:before pointcut="execution(* com.abc..*.*(..))" method="beforeAdvice" />
+    	</aop:aspect>    
+    </aop:config>
+           
+</beans>
